@@ -38,7 +38,7 @@ $GLOBALS['alchemy_url']='https://gateway-a.watsonplatform.net/calls';
 
 ```
 <?php
-if($_REQUEST['module']=='alchemySentiment'){    // when app loaded with  peraters this condition is executed
+if($_REQUEST['module']=='alchemySentiment'){
     switch ($_REQUEST['action']){
         case 'GetList':
         {
