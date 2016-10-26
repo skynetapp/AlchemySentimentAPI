@@ -9,8 +9,8 @@
 ------------ | ------------- | -------------
 index.php | | |
 Global | DBmongo(Mongo Connection),DBmysql(MySQL Connection), AlchemyAPI(Alchemy API Connection)  | 
-Lib | Smarty,Common functions | |
-Modules | AlchemySentiment | Alchemy Sentiment Controller, Alchemy Sentiment Action, Alchemy Sentiment MySql, Alchemy Sentiment View, Alchemy Sentiment API Call, Alchemy Sentiment DB Mongo|
+Lib | Smarty,Common functions,AlchemyAPI | |
+Modules | AlchemySentiment | Alchemy Sentiment Controller, Alchemy Sentiment Action, Alchemy Sentiment MySql, Alchemy Sentiment View, Alchemy Sentiment DB Mongo|
 Views | AlchemySentiment | header.tpl, footer.tpl(Common files), masterList.tpl,detailList.tpl|
 
 #### Code Flows as follows:
