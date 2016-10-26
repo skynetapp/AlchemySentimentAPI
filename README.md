@@ -1,4 +1,4 @@
-#### Date: 25-10-2016
+#### Date: 26-10-2016
 #### Description: This document aims to define the Alchemy Sentiment API coding 
 
 
