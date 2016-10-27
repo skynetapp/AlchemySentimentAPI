@@ -42,14 +42,12 @@ if($_REQUEST['module']=='alchemySentiment'){
     switch ($_REQUEST['action']){
         case 'GetList':
         {
-			//echo "1";exit; 
             $alchemyController = AlchemySentimentController::getInstance();
             $alchemyController->getDataFromAlchemyDB();
             break;
         }
 		 case 'GetMasterList':
         {
-			//echo "1";exit; 
             $alchemyController = AlchemySentimentController::getInstance();
             $alchemyController->getMasterListData();
             break;
@@ -74,7 +72,7 @@ if($_REQUEST['module']=='alchemySentiment'){
    From index.php, **AlchemyExtractController** class will be called which controlles all the operations of Alchemy Sentiment module. Here function **getDataFromAlchemyDB()** will be executed.
    
 #### Step 5:
-   This **getSentimentTextData()** function gets the multiple records data from Request table and sends request to Alchemy API response function **sentiment('text', $text, null)** one by one using for loop.
+   This **getSentimentTextData()** function gets the multiple records data from Request table and sends request to Alchemy API response function **sentiment('text', $text, null)** one by one using for loop. The Alchemy API will be in Lib folder.
    
 #### Step 6:
    On receiving response from API, the JSON response will be stored in Mongo DB by calling function  **insertAlchemyJSONResponseIntoMongo(json_encode($data))**.
@@ -86,7 +84,6 @@ if($_REQUEST['module']=='alchemySentiment'){
 
 ```  
  public function insertAllSentimentMasterDataIntoMySQL($data,$id){
-		//print_r($data); exit;
 		$this->response_array =$data;
 		$masterId=$this->insertIntoMasterData(json_encode($data),$id);
         if($masterId>0)
@@ -121,10 +118,10 @@ if($_REQUEST['module']=='alchemySentiment'){
 ```
    public function getParsedDataFromJSONResponse($masterId){
             $row['master_sentiment_id']=$masterId;
-			$row['mixed']=$this->response_array['docSentiment']['mixed'];
+	    $row['mixed']=$this->response_array['docSentiment']['mixed'];
             $row['sentiment_score']=$this->response_array['docSentiment']['score']; 
-		    $row['sentiment_type']=$this->response_array['docSentiment']['type'];
-			 $this->insertIntoRowMysqlTable($row);
+	    $row['sentiment_type']=$this->response_array['docSentiment']['type'];
+	    $this->insertIntoRowMysqlTable($row);
     }
 
      public function insertIntoRowMysqlTable($rowData=array()){
@@ -157,15 +154,15 @@ if($_REQUEST['module']=='alchemySentiment'){
 #### Step 11:
    To view the Master list function **showSentimentMasterListView()** will be called from controller to View.
    
-**_Code:_**
+**_View page Code:_**
 
 ```
   function showSentimentMasterListView($data_arr){
         $smarty = new Smarty();
         $smarty->assign('base_path',$GLOBALS['base_path']);
-		$smarty->assign('cursor',$data_arr);
+	$smarty->assign('cursor',$data_arr);
 		
-	    $smarty->display(''.$GLOBALS['root_path'].'/Views/AlchemySentiment/allMasterList.tpl');
+	$smarty->display(''.$GLOBALS['root_path'].'/Views/AlchemySentiment/allMasterList.tpl');
     }
     
 ``` 
@@ -174,7 +171,7 @@ if($_REQUEST['module']=='alchemySentiment'){
    To view the Child data based on the master id, function **getSentimentChildDataFromMySQL($post_data)** will be called from controller.
    Function **getAllChildDataFromMySQL($post_data)** will get the records based on the master id using MySql query. Function **showChildDetailListView($alchemy_list_vo)** will be called in view. 
    
-**_Code:_**
+**_Controller page Code:_**
 
 ```
 public function getSentimentChildDataFromMySQL($post_data){
@@ -183,4 +180,15 @@ public function getSentimentChildDataFromMySQL($post_data){
 		$alchemy_view = AlchemySentimentView::getInstance();
     	$alchemy_view->showChildDetailListView($alchemy_list_vo);
 	}
+```
+**_View page Code:_**
+
+```
+function showChildDetailListView($data_arr){
+        $smarty = new Smarty();
+        $smarty->assign('base_path',$GLOBALS['base_path']);
+		$smarty->assign('cursor',$data_arr);
+	    $smarty->display(''.$GLOBALS['root_path'].'/Views/AlchemySentiment/detailList.tpl');
+    }
+    
 ```
