@@ -87,13 +87,13 @@ $GLOBALS['alchemy_url']='https://gateway-a.watsonplatform.net/calls';
   
  Database Name: bluemix
  
- Tables | Description | Fields
------------- | -------------
-BlueMixAlmEntityExtractReq | Request table to get records where SentimentExtractionStatus='' and SentimentExtraction=0
-master_sentiment_request | Stores the extracted data based on the request id | alm_id, alm_request_date, alm_external_id, alm_sentiment_response_text 
-child_sentiment_request | Stores the child records based on master id | child_sentiment_id, master_sentiment_id, sentiment_type, sentiment_score, alc_date
+ Tables | Description | Fields 
+------------ | ------------- | ------------
+BlueMixAlmEntityExtractReq | Request table to get records where SentimentExtractionStatus='' and SentimentExtraction=0 | |
+master_sentiment_request | Stores the extracted data based on the request id | alm_id, alm_request_date, alm_external_id, alm_sentiment_response_text |
+child_sentiment_request | Stores the child records based on master id | child_sentiment_id, master_sentiment_id, sentiment_type, sentiment_score, alc_date |
  
  
- #### Mongo Database details
+#### Mongo Database details
  
- Database Name: lytepole
+Database Name: lytepole
