@@ -34,37 +34,6 @@ $GLOBALS['alchemy_url']='https://gateway-a.watsonplatform.net/calls';
 #### Step 2:
   Create a module name as 'alchemySentiment' in index.php and respective actions will be performed accordingly.
   
-**_Code:_**
-
-```
-<?php
-if($_REQUEST['module']=='alchemySentiment'){
-    switch ($_REQUEST['action']){
-        case 'GetList':
-        {
-            $alchemyController = AlchemySentimentController::getInstance();
-            $alchemyController->getDataFromAlchemyDB();
-            break;
-        }
-		 case 'GetMasterList':
-        {
-            $alchemyController = AlchemySentimentController::getInstance();
-            $alchemyController->getMasterListData();
-            break;
-        }
-        case 'DetailList':
-        {
-            $alchemyController = AlchemySentimentController::getInstance();
-            $alchemyController->getSentimentChildDataFromMySQL($_REQUEST);
-            break;
-        }
-      
-    }
-}
-?>
-
-```
-
 #### Step 3:
    In the server normally we will be able to see existing Master list data. When we click on the update button **GetList** action will be performed from index page and **getDataFromAlchemyDB()** will be called.
    
@@ -80,69 +49,10 @@ if($_REQUEST['module']=='alchemySentiment'){
 #### Step 7:
    The response array will be inserted into Master data by function **insertSentimentMasterDataIntoMySQL($data,$id);** from Controller -> Action -> MySql.
    
-**_ MySql Code:_**
-
-```  
- public function insertAllSentimentMasterDataIntoMySQL($data,$id){
-		$this->response_array =$data;
-		$masterId=$this->insertIntoMasterData(json_encode($data),$id);
-        if($masterId>0)
-		return $this->getParsedDataFromJSONResponse($masterId);
-	}
-	
-	
-	public function insertIntoMasterData($json_response,$id){
-    	$sql = "INSERT INTO master_sentiment_request
-               (
-                alm_sugar_id,
-                alm_sentiment_response_text,
-                alm_request_date,alm_external_id
-                ) VALUES (
-                
-                '',
-                '$json_response',
-                NOW(),
-				'$id'
-                )";
-		mysqli_query($this->con,$sql);
-        return $this->con->insert_id;
-    }
-
-```
 
 #### Step 8:
    Here based on the master request id, the response will be stored in Child table by function **getParsedDataFromJSONResponse($masterReqId)**.
 
-**_Code:_**
-
-```
-   public function getParsedDataFromJSONResponse($masterId){
-            $row['master_sentiment_id']=$masterId;
-	    $row['mixed']=$this->response_array['docSentiment']['mixed'];
-            $row['sentiment_score']=$this->response_array['docSentiment']['score']; 
-	    $row['sentiment_type']=$this->response_array['docSentiment']['type'];
-	    $this->insertIntoRowMysqlTable($row);
-    }
-
-     public function insertIntoRowMysqlTable($rowData=array()){
-    	$sql = "INSERT INTO child_sentiment_request(
-                    master_sentiment_id,
-					mixed,
-                    sentiment_type,
-                    sentiment_score,
-                    alc_date
-                ) VALUES (
-                    '".$rowData['master_sentiment_id']."',
-					'".$rowData['mixed']."',
-                    '".$rowData['sentiment_type']."',
-                    '".$rowData['sentiment_score']."',
-                    NOW()
-                )";
-        mysqli_query($this->con,$sql);
-        return $this->con->insert_id;
-    }
-    
-```
 
 #### Step 9:
    On inserting the JSON response into master and child tables, the status and Request date will be updated for that record in the Request table by function **updateSentimentTextData($id)** in controller.
@@ -170,25 +80,20 @@ if($_REQUEST['module']=='alchemySentiment'){
 #### Step 12:
    To view the Child data based on the master id, function **getSentimentChildDataFromMySQL($post_data)** will be called from controller.
    Function **getAllChildDataFromMySQL($post_data)** will get the records based on the master id using MySql query. Function **showChildDetailListView($alchemy_list_vo)** will be called in view. 
-   
-**_Controller page Code:_**
+ 
+ 
+#### MySQL Database Details
 
-```
-public function getSentimentChildDataFromMySQL($post_data){
-        $alchemy_action = AlchemySentimentAction::getInstance();
-        $alchemy_list_vo = $alchemy_action->getAllChildDataFromMySQL($post_data);
-		$alchemy_view = AlchemySentimentView::getInstance();
-    	$alchemy_view->showChildDetailListView($alchemy_list_vo);
-	}
-```
-**_View page Code:_**
-
-```
-function showChildDetailListView($data_arr){
-        $smarty = new Smarty();
-        $smarty->assign('base_path',$GLOBALS['base_path']);
-		$smarty->assign('cursor',$data_arr);
-	    $smarty->display(''.$GLOBALS['root_path'].'/Views/AlchemySentiment/detailList.tpl');
-    }
-    
-```
+  
+ Database Name: bluemix
+ 
+ Tables | Description | Fields
+------------ | -------------
+BlueMixAlmEntityExtractReq | Request table to get records where SentimentExtractionStatus='' and SentimentExtraction=0
+master_sentiment_request | Stores the extracted data based on the request id | alm_id, alm_request_date, alm_external_id, alm_sentiment_response_text 
+child_sentiment_request | Stores the child records based on master id | child_sentiment_id, master_sentiment_id, sentiment_type, sentiment_score, alc_date
+ 
+ 
+ #### Mongo Database details
+ 
+ Database Name: lytepole
