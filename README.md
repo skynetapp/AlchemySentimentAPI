@@ -109,9 +109,9 @@ Description: Mongo stores the JSON response given by the Alchemy API for all the
 
 - To start the mongoDB, open command prompt.
 - change the path where mongo is installed.
-- To start the MongoDB service - **net start MongoDB**.
-- To display the database, type **db**. It will return **test** as default database. To use our database type ** use dbname **.
-- To stop the MongoDB service - **net stop MongoDB**.
+- To start the MongoDB service - **mongo**.
+- To display the database, type **db**. It will return **test** as default database. To use our database type command ** use dbname **.
+- Type command **exit** to quit the mongo shell.
 
 
 
