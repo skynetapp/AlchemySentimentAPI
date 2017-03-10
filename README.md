@@ -107,10 +107,9 @@ child_sentiment_request | Stores the child records based on master id | child_se
 Database Name: lytepole
 Description: Mongo stores the JSON response given by the Alchemy API for all the records.
 
-- To start the mongoDB, open command prompt.
-- change the path where mongo is installed.
-- To start the MongoDB service - **mongo**.
-- To display the database, type **db**. It will return **test** as default database. To use our database type command ** use dbname **.
+- To start the mongoDB, open putty.
+- To start the MongoDB service type command - **mongo**.
+- To display the database, type command - **db**. It will return **test** as default database. To use our database type command **use dbname**.
 - Type command **exit** to quit the mongo shell.
 
 
