@@ -90,6 +90,28 @@ $GLOBALS['alchemy_url']='https://gateway-a.watsonplatform.net/calls';
    Function **getAllChildDataFromMySQL($post_data)** will get the records based on the master id using MySql query. Function **showChildDetailListView($alchemy_list_vo)** will be called in view. 
  
  
+ #### Assumptions
+
+- DBMongo - Inserts the Alchemy JSON response into mongo. It is included in Global -> DBMongo.
+
+
+#### Errors
+
+If any erros found, the following may be the reasons.
+
+- Url might not be correct. It should be as below.
+
+**_Url:_**
+
+```
+http://159.203.239.91/bluemix2.0/index.php?module=alchemySentiment&action=GetMasterList
+
+```
+- The root path, base path and the database name should be correct in config.php.
+- The alchemy API key should be a valid key from IBM Bluemix. If the key is expired, the results may not be appeared.
+- If the day limit is exceeded for the API key, then also the child results will not be inserted. 
+
+
 #### MySQL Database Details
 
   
@@ -104,8 +126,9 @@ child_sentiment_request | Stores the child records based on master id | child_se
  
 #### Mongo Database details
  
-Database Name: lytepole
-Description: Mongo stores the JSON response given by the Alchemy API for all the records.
+- Database Name: lytepole
+- Table or collection name : BlueMixEntityExtract
+- Description: Mongo stores the JSON response given by the Alchemy API for all the records.
 
 - To start the mongoDB, open putty.
 - To start the MongoDB service type command - **mongo**.
